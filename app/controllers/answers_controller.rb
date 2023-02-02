@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
 
   # GET /answers
   def index
@@ -15,7 +16,7 @@ class AnswersController < ApplicationController
 
   # POST /answers
   def create
-    @answer = Answer.new(answer_params)
+    @answer = current_user.answers.build(answer_params)
 
     if @answer.save
       render json: @answer, status: :created, location: @answer
